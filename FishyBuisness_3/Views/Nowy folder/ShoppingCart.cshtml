@@ -1,0 +1,46 @@
+﻿@model Cart
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Cart";
+}
+
+<h2>Your Shopping Cart</h2>
+
+@if (Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@(item.Quantity * item.Price)</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>@Model.Items.Sum(item => item.Quantity * item.Price)</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <a href="@Url.Action("Checkout", "Order")" class="btn btn-primary">Proceed to Checkout</a>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

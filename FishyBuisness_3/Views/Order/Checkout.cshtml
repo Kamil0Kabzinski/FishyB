@@ -1,0 +1,50 @@
+﻿@model Order
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Checkout</h2>
+
+@if (Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                    <td>@(item.Quantity * item.Price)</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">Total:</td>
+                <td>@Model.Items.Sum(item => item.Quantity * item.Price)</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <form method="post" action="@Url.Action("PlaceOrder", "Order")">
+        <!--  pola formularza dla informacji o kliencie, dostawie itp. TRZEBA DODAC !!! -->
+
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
+}
+else
+{
+    <p>Your order is empty.</p>
+}
