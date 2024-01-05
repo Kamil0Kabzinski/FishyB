@@ -9,7 +9,14 @@ namespace FishyBuisness_3.Data
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
+
 		}
 	    public DbSet<FishyBuisness_3.Models.Fish> Fish { get; set; } = default!;
-	}
+
+
+    }
 }
+
+
+
+// FishName, FishDescription, Spieces, Habitat, Lenght, Weight, Price
