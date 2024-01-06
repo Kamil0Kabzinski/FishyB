@@ -1,6 +1,9 @@
 using FishyBuisness_3.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,27 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+
+//Localization
+
+builder.Services.AddLocalization(options => options.ResourcesPath="Rescoures");
+builder.Services.AddMvc()
+	.AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+	.AddDataAnnotationsLocalization();
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+	var cultures = new List<CultureInfo> {
+		new CultureInfo("en"),
+		new	CultureInfo("pl"),
+		new CultureInfo("de")
+		
+		};
+	options.DefaultRequestCulture = new RequestCulture("en");
+	options.SupportedCultures = cultures;
+	options.SupportedUICultures = cultures;
+});
 
 var app = builder.Build();
 
@@ -35,6 +59,17 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//var cultures = new[] { "en", "pl", "de" };
+//var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(cultures[0])
+//	.AddSupportedCultures(cultures)
+//	.AddSupportedUICultures(cultures);
+app.UseRequestLocalization(app.Services.CreateScope().ServiceProvider
+	.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
+
+
+
+
 
 app.MapControllerRoute(
 	name: "default",
