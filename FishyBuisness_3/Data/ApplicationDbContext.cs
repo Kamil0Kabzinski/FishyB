@@ -11,5 +11,6 @@ namespace FishyBuisness_3.Data
 		{
 		}
 	    public DbSet<FishyBuisness_3.Models.Fish> Fish { get; set; } = default!;
-	}
+        public DbSet<FishyBuisness_3.Models.ApplicationUser> ApplicationUsers { get; set; }
+    }
 }
